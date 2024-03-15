@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}">
+</head>
+<body style="margin: 0 !important; padding: 0 !important;">
+    <div class="container-fluid p-0 m-0 overflow-auto d-flex flex-rowr" style="height: 100vh;">
+        <div class="container d-flex justify-content-center bg-dark text-light h-100">
+            <div class="align-self-center">
+                <h1 class="display-3">WEB PORTAL</h1>
+                <p class="display-6" style="font-size: 20px !important;">Login to access log files</p>
+            </div>
+        </div>
+        <div class="container align-self-center">
+            <h1 class="display-6">Login</h1>
+            <br>
+            {% for mesg in get_flashed_messages() %}
+                <h1 class="display-6 text-danger">{{ mesg }}</h1><br>
+            {% endfor %}
+            <div class="login-form">
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label class="display-6 pb-2" style="font-size: 20px !important;">User Name</label>
+                        <input type="text" class="form-control p-3" name="username" id="username" required placeholder="username">
+                    </div><br>
+                    <div class="form-group">
+                        <label class="display-6 pb-2" style="font-size: 20px !important;">Password</label>
+                        <input type="password" class="form-control p-3" id="password" name="password" required placeholder="password">
+                    </div><br>
+                    <button type="submit" class="btn btn-info btn-lg display-6">LOGIN</button>
+                </form>
+            </div>
+            {% if message %}
+            <p>{{ message }}</p>{% endif %}
+        </div>
+    </div>
+
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</body>
+</html>

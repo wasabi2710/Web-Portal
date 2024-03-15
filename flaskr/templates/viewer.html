@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewing {{ filename }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <div class="container m-4 p-4 shadow-lg bg-body rounded">
+        <h1 class="display-3" style="font-size: 8ch !important">{{ filename }}</h1>
+        <div class="d-flex" style="height: 100px;">
+            <div class="vr text-dark"></div>
+        </div>
+        <pre class="text-left">{{ content }}</pre>
+        <div class="d-flex" style="height: 100px;">
+            <div class="vr text-dark"></div>
+        </div>
+        <span class="display-6" style="font-size: 20px !important;">END</span>
+    </div>
+
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</body>
+</html>

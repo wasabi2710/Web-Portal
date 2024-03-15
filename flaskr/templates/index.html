@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILE BROWSER</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}">
+</head>
+<body style="
+height: 100%;
+min-height: 100%;
+">
+    <div class="container-fluid" style="height: 100vh;">
+        <div class="row h-100" style="height: 100vh;">
+            <div class="col-5 p-4 bg-dark text-light d-flex flex-column justify-content-between">
+                <div>
+                    <h1 class="display-4">ACS WEB PORTAL</h1>
+                    <p class="display-6" style="font-size: 20px !important;">Access Log Files</p><br>
+
+                    <div class="login-form">
+                        <form method="POST">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="submit" name="submit_action" value="search" class="btn btn-light border border-dark rounded-0">Search</button>
+                                </div>
+                                <input type="text" class="form-control border border-dark rounded-0" name="search" id="search" value="{{ search_term or '' }}" placeholder="log date ...">
+                                <div class="input-group-append">
+                                    <button type="submit" name="submit_action" value="clear" class="btn btn-light border border-dark rounded-0">Clear</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger display-4 align-text-bottom" role="button" aria-pressed="true">Logout</a>
+                </div>
+
+            </div>
+            <div class="col-7 p-4">
+                <h3 class="display-4">List of Log Files</h3><br>
+                <ul class="list-group list-group-flush">
+                    {% if logs %}
+                        {% for log in logs %}
+                        <li class="list-group-item d-flex flex-row justify-content-between">
+                            <div>
+                                <p class="display-6" style="font-size: 24px !important;">{{ log['filename'] }}</p>
+                                <a href="{{ url_for('download_file', filename=log['filename']) }}" download class="btn btn-success" role="button" aria-pressed="true" style="font-size: 14px;">Download</a>
+                                <a href="{{ url_for('view_file', filename=log['filename']) }}" class="btn btn-info" role="button" aria-pressed="true" style="font-size: 14px;">View</a>
+                            </div>
+                            <div>
+                                <span class="badge bg-primary rounded-pill">{{ log['size'] }}</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <p class="display-6" style="font-size: 20px !important;">No Files Found!</p>
+                    {% endif %}
+                </ul>
+
+                <br>
+                {% if logs %}
+                <ul class="pagination">
+                        {% if prev_url %}
+                        <li class="page-item"><a href="{{ prev_url }}" class="page-link">Previous</a></li>
+                        {% endif %}
+                        {% for link in links %}
+                        <li class="page-item"><a href="{{ link }}" class="page-link">{{ links[link] }}</a></li>
+                        {% endfor %}
+                        {% if next_url %}
+                        <li class="page-item"><a href="{{ next_url }}" class="page-link">Next</a></li>
+                        {% endif %}
+                </ul>
+                <span class="" style="font-size: 20px impr !important;">Page {{ index }} of {{ total_pages }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" href="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+</body>
+</html>

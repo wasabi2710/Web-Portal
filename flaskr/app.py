@@ -21,12 +21,15 @@ login_manager.login_view = "login"
 
 # silly user model
 class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
-        self.name = "user" + str(id)
-        self.password = self.name + "_secret"
-        
-users = [User(id) for id in range(1,5)]
+    def __init__(self, username, password):
+        self.id = username
+        self.password = password
+    def verify_password(self, password):
+        return self.password == password
+# db
+users = {
+    'admin': User('admin', 'admin')
+}
 
 @app.before_request
 def before_request():
@@ -36,6 +39,11 @@ def before_request():
 @app.route('/')
 def home():
     return redirect(url_for('login'))
+
+# callback to reload the user object
+@login_manager.user_loader
+def load_user(user_id):
+    return users.get(user_id)
 
 # protected urls
 @app.route("/list", methods=["GET", "POST"])
@@ -100,13 +108,16 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if password == username + "_secret":
-            id = username.split('user')[1]
-            user = User(id)
-            login_user(user)
-            return redirect(url_for('list_files'))
+        user = users.get(username)
+        if user:
+            if user.verify_password(password):
+                login_user(user=user)
+                return redirect(url_for('list_files'))  
+            else:
+                flash("Incorrect Password ???", category="message")
+                return redirect(url_for('login'))
         else:
-            flash("Incorrect Credentials!", category="message")
+            flash("Incorrect User ???", category="message")
             return redirect(url_for('login'))
         
     return render_template('login.html')
@@ -128,11 +139,6 @@ def page_not_found(e):
 def unauthorized_callback():
     flash("You are not authorized!", category="message")
     return redirect(url_for('login'))
-
-# callback to reload the user object
-@login_manager.user_loader
-def load_user(user_id):
-    return User(user_id)
 
 # unit test in loopback
 if __name__ == '__main__':

@@ -1,1 +1,3 @@
-tests
+tests/
+venv/
+flaskr/static/node_modules
